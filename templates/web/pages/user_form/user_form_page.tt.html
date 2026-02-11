@@ -180,7 +180,7 @@
             <fieldset>
                 <legend class="text_warning">[% lang("danger_zone") %]</legend>
                 [% delete_confirm=esq(lang("delete_confirmation")) %]
-                <input type="button" name=".delete" class="button text_warning" value= "[% edq(lang('delete_user')) %]" onclick="if ('[% userid %]'.localeCompare(prompt('[% delete_confirm %]'),undefined,'base') === 0) {document.getElementById('delete_input').value='on';document.getElementById('user_form').submit();}"/>
+                <input type="button" name=".delete" class="button text_warning" id="delete_user_button" value= "[% edq(lang('delete_user')) %]" onclick="if ('[% userid %]'.localeCompare(prompt('[% delete_confirm %]'),undefined,'base') === 0) {document.getElementById('delete_input').value='on';window._paq && _paq.push(['trackEvent', 'User account', 'Delete account click']);document.getElementById('user_form').submit();}"/>
                 <input type="hidden" name="delete" id="delete_input"/>
             </fieldset>
         [% END %]
@@ -191,7 +191,7 @@
             <input type="hidden" name="userid" value="[% userid %]" />
             <input type="submit" name=".submit" class="button" value= "[% edq(lang('save')) %]" />
         [% ELSE %]
-            <input type="submit" name=".submit" class="button" value= "[% edq(lang('add_user')) %]" />
+            <input type="submit" name=".submit" class="button" id="signup_submit_button" value= "[% edq(lang('add_user')) %]" onclick="window._paq && _paq.push(['trackEvent', 'User account', 'Completed sign-up form submit']);" />
         [% END %]
     </form>
 
@@ -201,6 +201,11 @@
     <p>[% lang("${type}_user_result") %]</p>
 
     [% IF type == 'add' %]
+
+        <!-- Matomo: Track successful signup (#8191) -->
+        <script>
+            window._paq && _paq.push(['trackEvent', 'User account', 'Signup successful']);
+        </script>
 
         <!-- Show different messages depending on whether it is a pro account
         and whether we are on the public platform or the pro platform -->
